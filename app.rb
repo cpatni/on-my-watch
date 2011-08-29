@@ -99,17 +99,19 @@ class OnMyWatch < Sinatra::Base
 
   def build_index(login)
     per_page = 100
-    page = 1
-    response = invoke_watched_repos_api(login, page, per_page)
+    start_page = 1
+    build_index_helper(login, start_page, per_page)
+  end
+
+  def build_index_helper(login, start_page, per_page)
+    response = invoke_watched_repos_api(login, start_page, per_page)
     index_page(login, response.body)
     link_header = response['Link']
     if link_header
-      links = link_header.scan(/<([^>]+)>; rel="([^"]+),?/)
-      last_page = CGI::parse(URI.parse(links[1][0]).query)['page'].first.to_i
-      (2..last_page).each do |page|
-        url = "https://api.github.com/users/#{login}/watched?page=#{page}&per_page=#{per_page}"
-        response = invoke_api(url)
-        index_page(login, response.body)
+      links = link_header.scan(/<([^>]+)>; rel="next"/)
+      if links && links[0] && links[0][0]
+        next_page = CGI::parse(URI.parse(links[0][0]).query)['page'].first.to_i
+        build_index_helper(login, next_page, per_page)
       end
     end
   end
@@ -148,7 +150,6 @@ class OnMyWatch < Sinatra::Base
   end
 
   def invoke_api(url)
-    # response = Net::HTTP.get_response(URI.parse(url))
     uri = URI.parse(url)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true

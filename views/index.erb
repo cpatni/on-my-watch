@@ -2,7 +2,7 @@
   <h1>Search your watch repositories on github</h1>
   <form action="/search/" method="get" accept-charset="utf-8">
     <label for="login">Github username/login</label>
-    <input type="text" id="login" name="login" login="<%=params[:login]%>" class="searchBox clear" />
+    <input type="text" id="login" name="login" value="<%=params[:login]%>" class="searchBox clear" />
     <input type="submit" name="submit" value="Get Started &rarr;" class="cta inact" />
   </form>
 </div>
