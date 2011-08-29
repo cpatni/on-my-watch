@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%=title%></title>
+  <link rel="stylesheet" href="/stylesheets/serp.css" type="text/css" media="screen" title="SERP" charset="utf-8">
+</head>
+<body>
+  <% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, :id => "flash_#{name}" %>
+  <% end %>
+  <%= yield %>
+</body>
+</html>

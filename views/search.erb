@@ -1,0 +1,49 @@
+  <div id="search-container">
+    <form id="searchForm" action="/search/<%=params[:login]%>" method="get" accept-charset="utf-8">
+      <span class="refresh">
+        <a href="/refresh/<%=params[:login]%>">Refresh</a>
+      </span>
+      <label for="queryField">Search watched repos of <%=params[:login]%></label>
+      <input type="text" id="queryField" name="query" value="<%=params[:query]%>" class="searchBox clear" />
+      <input type="submit" name="submit" value="Search &rarr;" class="submitButton inact" />
+      <span class="latest">
+        <strong>Last indexed on:
+          <span id="last-indexed-on"><%=refreshed_at%></span>
+        </strong>
+      </span>
+      <div class="clear"></div>
+    </form>
+    <% if params[:query] %>
+    <h3 class="results-for">Results for <%=params[:query]%></h3>
+      <% if !documents.empty? %>
+      <ol class="results">
+        <% for doc in documents %>
+        <li class="result">
+          <a href="https://github.com/<%=doc['owner_login']%>">
+            <img src="<%=doc['owner_avatar_url']%>" width="64" height="64" alt="sandal's avatar" class="avatar" />
+          </a>
+          <div class="describe">
+            <strong>
+              <a href="https://github.com/<%=doc['owner_login']%>" class="username"><%=doc['owner_login']%></a>/
+            </strong>
+            <strong><a href="<%=doc['html_url']%>" class="reponame"><%=doc['name']%></a></strong>
+
+            <div class="description">
+              <%=doc['text']%>
+            </div>
+
+            <div class="language">
+              <%=doc['language']%>
+            </div>
+
+            <div class="clear"></div>
+          </div>
+        </li>
+        <% end %>
+      </ol>
+      <% else %>
+      <div class="no_results">Your query didn't match any repo</div>
+      <% end %>
+    <% end %>
+  </div>
+

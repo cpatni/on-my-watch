@@ -1,0 +1,8 @@
+{
+  "login": "__GITHUB_LOGIN__",
+  "create_index": "false",
+  "index_tank": {
+    "private_url": "__INDEXTANK_PRIVATE_URL__",
+    "public_url": "__INDEXTANK_PUBLIC_URL__"
+  }
+}
